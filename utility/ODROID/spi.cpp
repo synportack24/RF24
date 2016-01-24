@@ -143,6 +143,8 @@ uint8_t SPI::transfer(uint8_t tx_)
 	tr.speed_hz = this->speed;
 	tr.bits_per_word = this->bits;*/
 
+        
+        // This might need to be changed to SPI_IOC_MESSAGE(1) for the ODROID C1, need to double check
 	ret = ioctl(this->fd, SPI_IOC_MESSAGE(1), &tr);
 	if (ret < 1)
 	{
@@ -184,6 +186,7 @@ void SPI::transfernb(char* tbuf, char* rbuf, uint32_t len)
 	tr.speed_hz = this->speed;
 	tr.bits_per_word = this->bits;*/
 
+        // Samsies as the comment above about the ODROID C1 change
 	ret = ioctl(this->fd, SPI_IOC_MESSAGE(1), &tr);
 	if (ret < 1)
 	{

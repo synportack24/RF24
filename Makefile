@@ -48,8 +48,10 @@ SHARED_LINKER_FLAGS=-shared -Wl,-soname,$@.so.1
 
 
 
-# Detect the Raspberry Pi from cpuinfo
+# Detect CPU info
 # Allow users to override the use of BCM2835 driver and force use of SPIDEV by specifying " sudo make install -B RF24_SPIDEV=1 "
+
+ODROID=$(shell cat /proc/cpuinfo | grep Hardware | grep -c ODROIDC)
 ifeq "$(RF24_SPIDEV)" "1"
 RPI=0
 else
@@ -60,6 +62,7 @@ RPI=$(shell cat /proc/cpuinfo | grep Hardware | grep -c BCM2708)
   endif
 endif
 
+# If MRAA
 ifeq "$(RF24_MRAA)" "1"
 SHARED_LINKER_FLAGS+=-lmraa 
 DRIVER_DIR=$(ARCH_DIR)/MRAA
@@ -72,6 +75,11 @@ OBJECTS+=interrupt.o
 SHARED_LINKER_FLAGS+=-pthread
 # The recommended compiler flags for the Raspberry Pi
 CCFLAGS=-Ofast -mfpu=vfp -mfloat-abi=hard -march=$(ARCH) -mtune=arm1176jzf-s
+
+else ifeq "$(ODROID)" "1"
+DRIVER_DIR=$(ARCH_DIR)/ODROID
+OBJECTS+=gpio.o compatibility.o
+CCFLAGS=-Ofast-march=$(ARCH)
 
 else
 DRIVER_DIR=$(ARCH_DIR)/BBB
