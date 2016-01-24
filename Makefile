@@ -10,7 +10,16 @@
 # ------------
 # use make all and mak install to install the library 
 # You can change the install directory by editing the LIBDIR line
+#############################################################################
+# Makefile for ODROID C1/C1+
 #
+# License: GPL (General Public License)
+# Author:  Andrew Ruggeri
+# Date:    2016-01-23
+#
+# Description:
+# Updated makefile for ODROID C1
+#############################################################################
 PREFIX=/usr/local
 
 # Library parameters
@@ -69,6 +78,8 @@ DRIVER_DIR=$(ARCH_DIR)/BBB
 OBJECTS+=gpio.o compatibility.o
 endif
 
+dtest:
+	echo "herp"
 
 # make all
 # reinstall the library after each recompilation
@@ -121,3 +132,6 @@ install-headers:
 	@if ( test ! -d ${HEADER_DIR}/${DRIVER_DIR} ) ; then mkdir -p ${HEADER_DIR}/${DRIVER_DIR} ; fi
 	@install -m 0644 ${DRIVER_DIR}/*.h ${HEADER_DIR}/${DRIVER_DIR}
 	@install -m 0644 ${ARCH_DIR}/*.h ${HEADER_DIR}/${ARCH_DIR}
+
+# Leave this here for now
+print-%  : ; @echo $* = $($*)
